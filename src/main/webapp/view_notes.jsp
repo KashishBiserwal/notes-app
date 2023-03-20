@@ -1,8 +1,8 @@
 <%@ page import="org.hibernate.Session" %>
 <%@ page import="com.helper.FactoryProvider" %>
-<%@ page import="jakarta.persistence.Query" %>
 <%@ page import="com.entities.Notes" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.hibernate.query.NativeQuery" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -16,12 +16,15 @@
 <br>
 <div class="container">
   <h1>My Notes...</h1>
+  <div class="plus-btn" style="top: 5rem">
+    <a href="add_notes.jsp"><img src="images/add-icon.png" alt="..."></a>
+  </div>
   <br>
     <div class="notes-list">
       <%
         Session s = FactoryProvider.getFactory().openSession();
-        Query q = s.createQuery("from Notes");
-        List<Notes> list = q.getResultList();
+        NativeQuery query = s.createNativeQuery("SELECT * FROM Notes", Notes.class);
+        List<Notes> list = query.list();
         for(Notes note: list){
         %>
       <div class="card mt-3">
@@ -33,8 +36,8 @@
           <p class="card-text"><%=note.getContent()%></p>
           <p><%=note.getAddedDate()%></p>
           <div class="container text-center">
-            <a href="edit_note.jsp?note_id=<%=note.getId()%>" class="update-delete-icon"><img src="images/update-icon.png" alt="..."></a>
-            <a href="DeleteServlet?note_id=<%=note.getId()%>" class="update-delete-icon"><img src="images/delete-icon.png" alt="..."></a>
+            <a href="edit_note.jsp?note_id=<%=note.getId()%>" class="update-delete-icon"><img src="images/update-icon.png" alt="..." style="width: 70px"></a>
+            <a href="DeleteServlet?note_id=<%=note.getId()%>" class="update-delete-icon"><img src="images/delete-icon.png" alt="..." style="width: 45px"></a>
           </div>
         </div>
       </div>
@@ -43,9 +46,6 @@
         s.close();
       %>
     </div>
-
-
-
 </div>
 </body>
 </html>

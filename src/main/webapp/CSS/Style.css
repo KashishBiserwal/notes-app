@@ -40,6 +40,12 @@ body{
     bottom: 3rem;
     right: 3rem;
 }
+.plus-btn-fix{
+    display: block;
+    position: absolute;
+    right: 3rem;
+}
+
 .note-title{
     display: flex;
 }
